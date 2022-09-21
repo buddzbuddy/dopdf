@@ -46,25 +46,11 @@ namespace dopdf.Utility
 
             return sb.ToString();
         }
-        public static string PatchToTmpl(ExpandoObject obj)
+        public static string PatchToTmpl(ExpandoObject obj, string tmplPath)
         {
             var parser = new FluidParser();
             //var model = new Dictionary<string, object> { { "firstname", 123 }, { "Lastname", DateTime.Now } };
-            var source = @"
-<html>
-<head></head>
-<body>
-<h1>Hello <b>{{firstname}}</b> {{lastname}}<h1>
-<ul>
-  {% for item in myarray %}
-    <li>
-{{item.v1 | prettyprint | paragraph}}. {{item.v2}}
-    </li>
-  {% endfor %}
-</ul>
-</body>
-</html>
-";
+            var source = System.IO.File.ReadAllText(tmplPath);
 
             if (parser.TryParse(source, out var template, out var error))
             {
