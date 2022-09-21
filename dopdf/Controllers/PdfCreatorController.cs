@@ -43,7 +43,7 @@ namespace dopdf.Controllers
                     PaperSize = PaperKind.A4,
                     Margins = new MarginSettings { Top = 10 },
                     DocumentTitle = "PDF Document",
-                    Out = Path.Combine(_config.GetValue<string>("Custom:outFolder"), obj.fileName + ".pdf")//@"D:\temp\Employee_Report.pdf" 
+                    Out = Path.Combine(_config.GetValue<string>("Custom:outFolder"), obj.fileName + ".pdf")
                 };
 
                 var objectSettings = new ObjectSettings

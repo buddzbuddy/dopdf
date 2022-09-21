@@ -15,7 +15,6 @@ namespace dopdf.Utility
 
         public List<string> errors { get; private set; }
         public string message { get; private set; }
-        public string sortBy { get; private set; }
 
         private operationResult(object data)
         {
@@ -53,15 +52,6 @@ namespace dopdf.Utility
             var result = new operationResult(data);
             result.isSuccess = true;
             result.message = msg;
-            return result;
-        }
-
-        public static operationResult success(object data, string msg, string sortBy)
-        {
-            var result = new operationResult(data);
-            result.isSuccess = true;
-            result.message = msg;
-            result.sortBy = sortBy;
             return result;
         }
 
