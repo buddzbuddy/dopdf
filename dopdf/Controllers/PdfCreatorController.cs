@@ -50,7 +50,7 @@ namespace dopdf.Controllers
                 {
                     PagesCount = true,
                     HtmlContent = TemplateGenerator.PatchToTmpl(obj.data, Path.Combine(_config.GetValue<string>("Custom:tmplFolder"), obj.tmplName + ".html")),
-                    WebSettings = { DefaultEncoding = "utf-8", UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css") },
+                    WebSettings = { DefaultEncoding = "utf-8"/*, UserStyleSheet = Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css")*/ },
                     HeaderSettings = { FontName = "Arial", FontSize = 9, Right = "Стр. [page] из [toPage]", Line = true },
                     FooterSettings = { FontName = "Arial", FontSize = 9, Line = true, Center = "Report Footer" }
                 };
