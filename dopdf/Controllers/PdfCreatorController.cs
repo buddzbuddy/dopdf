@@ -12,6 +12,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace dopdf.Controllers
 {
@@ -29,7 +30,7 @@ namespace dopdf.Controllers
             _config = config;
         }
 
-        [HttpPost]
+        [HttpPost("generate")]
         public IActionResult CreatePDF([FromBody] dynamic json)
         {
             try
@@ -69,6 +70,31 @@ namespace dopdf.Controllers
                 _logger.LogError($"Something went wrong in the {nameof(CreatePDF)} action {ex}");
                 return Ok(operationResult.failure().addError(ex.GetBaseException().Message));
             }
+        }
+
+        [HttpPost("render")]
+        public IActionResult render([FromBody] dynamic json)
+        {
+            try
+            {
+                var converter = new ExpandoObjectConverter();
+                dynamic obj = JsonConvert.DeserializeObject<ExpandoObject>(json.ToString(), converter);
+                string src = TemplateGenerator.PatchToTmpl(obj.data, Path.Combine(_config.GetValue<string>("Custom:tmplFolder"), obj.tmplName + ".html"));
+                html = src.Replace("</head>", $"<style>{System.IO.File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "assets", "styles.css"))}</style></head>");
+                return Ok(operationResult.success());
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Something went wrong in the {nameof(render)} action {ex}");
+                return Ok(operationResult.failure().addError(ex.GetBaseException().Message));
+            }
+        }
+
+        static string html { get; set; }
+        [HttpGet("renderhtml")]
+        public ContentResult renderHtml()
+        {
+            return Content(html, "text/html", System.Text.Encoding.UTF8);
         }
     }
 }
